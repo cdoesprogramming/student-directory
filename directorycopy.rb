@@ -33,41 +33,34 @@ def process(selection)
 end
 
 def input_students
+    enter_students
+    student_name(gets.chomp)
+end
+
+
+def enter_students
     puts "Please enter the names of the students"
     puts "To finish, just hit return twice"
-    #create an empty array
-    students = []
-    #get the first name
-    name = gets.chomp    
-    #while the name is not empty, repeat this code
-    while name.empty? 
+end
+
+def student_name(name)
+  if !name.empty?
+    puts "Please enter the cohort month"
+    month = gets.chomp
+    puts "Are you happy with the information you have stored? Y/N"
+    check = gets.chomp
+      if check == "Y"
+        if month == ""
+          month = "July"
+        end
+        @students << {name: name, cohort: month}
+      elsif check == "N"
+        input_students
+      end
+        puts "Now we have #{pluralize @students.count}"
         name = gets.chomp
     end
-    while !name.empty? do
-        #ask for cohort month
-        puts "Please enter the cohort month"
-          month = gets.strip
-          #Check user is happy with information
-          puts "Are you happy with the information you have stored? Y/N"
-          check = gets.chomp
-          if check == "Y"
-            #add the name and cohort month to the array
-            if month == ""
-                month = "July"
-            end
-            @students << {name: name, cohort: month}
-          elsif check == "N"
-          input_students
-          end
-          #add the name and cohort month to the array
-          #Check if month value is empty and give a default month
-          #get another name from the user
-          puts "Now we have #{pluralize @students.count}"
-          #get another name from the user
-          name = gets.chomp
-        end
-        students
-    end
+end
     
 def pluralize(plural)
     if plural == 1 then "#{plural} student"
