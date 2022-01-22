@@ -1,11 +1,11 @@
 @students = []
 
 def print_menu
-  puts "1. Input the students"
-  puts "2. Show the students"
-  puts "3. Save the list to students.csv"
-  puts "4. Load the list from students.csv"
-  puts "9. Exit"
+  puts "1. Input the students".center(100, ' ')
+  puts "2. Show the students".center(100, ' ')
+  puts "3. Save the list to students.csv".center(100, ' ')
+  puts "4. Load the list from students.csv".center(100, ' ')
+  puts "9. Exit".center(100, ' ')
 end
 
 def interactive_menu
@@ -24,17 +24,22 @@ end
 def process(selection)
   case selection
   when "1"
+    puts "You have chosen to Input students.".center(100, ' ')
     input_students
   when "2"
+    puts "You have chosen to view the list of students.".center(100, ' ')
     show_students
   when "3"
+    puts "You have saved the list of students.".center(100, ' ')
     save_students
   when "4"
+    puts "Here is the list of students:".center(100, ' ')
     load_students
   when "9"
+    puts "Goodbye!".center(100, ' ')
     exit
   else
-    puts "I don't know what you mean, try again"
+    puts "I don't know what you mean, try again".center(100, ' ')
   end
 end
 
@@ -45,29 +50,33 @@ end
 
 
 def enter_students
-    puts "Please enter the names of the students"
-    puts "To finish, just hit return twice"
+    puts "Please enter the names of the students".center(100, ' ')
+    puts "To finish, just hit return twice".center(100, ' ')
 end
 
 def student_name(name)
   if !name.empty?
-    puts "Please enter the cohort month"
+    puts "Please enter the cohort month".center(100, ' ')
     month = STDIN.gets.chomp
-    puts "Are you happy with the information you have stored? Y/N"
+    puts "Are you happy with the information you have stored? Y/N".center(100, ' ')
     check = STDIN.gets.chomp
-      if check == "Y"
-        if month == ""
-          month = "July"
-        end
-        @students << {name: name, cohort: month}
-      elsif check == "N"
-        input_students
+    if check == "Y"
+      if month == ""
+        month = "July"
       end
-        puts "Now we have #{pluralize @students.count}"
-        name = STDIN.gets.chomp
+      add_students(name, month)
+    elsif check == "N"
+      input_students
     end
+  end
 end
-    
+
+def add_students(name, month)
+  @students << {name: name, cohort: month.to_sym}
+  puts "Now we have #{pluralize @students.count}".center(100, ' ')
+    name = STDIN.gets.chomp
+end
+
 def pluralize(plural)
     if plural == 1 then "#{plural} student"
     else "#{plural} students"
@@ -103,11 +112,13 @@ end
 def load_students(filename = "students.csv")
   file = File.open(filename, "r")
   file.readlines.each do |line|
-    name, cohort = line.chomp.split(',')
-    @students << {name: name, cohort: cohort.to_sym}
+    name, month = line.chomp.split(',')
+    add_students(name, month)
   end
   file.close
 end
+
+
 
 def try_load_students
   filename = ARGV.first
