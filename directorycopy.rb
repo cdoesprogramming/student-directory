@@ -3,7 +3,7 @@
 def print_menu
   puts "1. Input the students".center(100, ' ')
   puts "2. Show the students".center(100, ' ')
-  puts "3. Save the list to students.csv".center(100, ' ')
+  puts "3. Save the list of students".center(100, ' ')
   puts "4. Load the list from students.csv".center(100, ' ')
   puts "9. Exit".center(100, ' ')
 end
@@ -30,11 +30,11 @@ def process(selection)
     puts "You have chosen to view the list of students.".center(100, ' ')
     show_students
   when "3"
-    puts "You have saved the list of students.".center(100, ' ')
-    save_students
+    puts "Enter a file name to save the student list:".center(100, ' ')
+    save_file_name 
   when "4"
-    puts "Here is the list of students:".center(100, ' ')
-    load_students
+    puts "What is the name of the file?".center(100, ' ')
+    check_file_name 
   when "9"
     puts "Goodbye!".center(100, ' ')
     exit
@@ -99,6 +99,28 @@ def print_footer
     puts "Overall, we have #{pluralize @students.count}".center(100, ' ')
 end
 end
+
+def file_name
+  puts "What is the name of the file?".center(100, ' ')
+  filename = STDIN.gets.chomp
+end
+
+def check_file_name
+  filenamed = STDIN.gets.chomp
+  if filenamed == "students.csv"
+    load_students
+  else puts "I don't recognise that file name. Please try again".center(100, ' ')
+  end
+end
+
+def save_file_name
+  savefilename = gets.chomp
+  if savefilename == "students.csv"
+    save_students
+  else puts "Incorrect file name. Please try again.".center(100, ' ')
+  end
+end
+
 def save_students
     file = File.open("students.csv", "w")
     @students.each do |student|
@@ -107,6 +129,7 @@ def save_students
         file.puts csv_line
     end
     file.close
+    puts "File saved".center(100, ' ')
 end
 
 def load_students(filename = "students.csv")
